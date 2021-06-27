@@ -34,7 +34,7 @@ bool stringEquals (char str1[], char str2[])
     return true;
 }
 
-void setSettings(float* gravityAcceleration, float* initVelocity, float* height, float* rAngle)
+void setSettings(float* gravityAcceleration, float* initVelocity, float* height, float* rAngle, int* decimalPlaces)
 {
     bool gettingSettings = true;
 
@@ -45,14 +45,14 @@ void setSettings(float* gravityAcceleration, float* initVelocity, float* height,
         bool gettingValue = true;
 
         
-        std::cout << "Enter the desired non-zero positive gravitational acceleration in meters per second squared. An invalid input will result in value of 1 m/s2\n";
+        std::cout << "Enter the desired non-zero positive gravitational acceleration in meters per second squared. An invalid input will result in value of 9.81 m/s2\n";
         std::cin >> *gravityAcceleration;
 
         clearInputBuffer();
 
         if (*gravityAcceleration <= 0)
         {
-            *gravityAcceleration = 1;
+            *gravityAcceleration = 9.81;
         }
         
         std::cout << "Enter the non-negative height of the cannon in meters. An invalid input will result in a value of 0 m. \n";
@@ -89,12 +89,21 @@ void setSettings(float* gravityAcceleration, float* initVelocity, float* height,
             *initVelocity = 0;
         }
 
+        std::cout << "Enter the desired non-negative precision (Bigger number means more precise). An invalid input will result in 0.\n";
+        std::cin >> *decimalPlaces;
+
+        if (*decimalPlaces < 0)
+        {
+            *decimalPlaces = 0;
+        }
+
         std::cout << "\nThese are the values you have inputted:\n";
         std::cout << "Gravitational acceleration: " << *gravityAcceleration << " m/s2\n";
         std::cout << "Height: " << *height << " m\n";
         std::cout << "Angle (Degrees): " << dAngle << std::endl;
         std::cout << "Angle (Radians): " << *rAngle << " rad\n";
         std::cout << "Initial velocity: " << *initVelocity << " m/s\n";
+        std::cout << "Precision: " << *decimalPlaces << "\n";
 
         std::cout << "\nIs this correct? Enter \"y\" if so.\n";
         char userInput;
@@ -109,13 +118,13 @@ void setSettings(float* gravityAcceleration, float* initVelocity, float* height,
     }
 }
 
-void simulate(float gravityAcceleration, float initVelocity, float height, float rAngle)
+void simulate(float gravityAcceleration, float initVelocity, float height, float rAngle, int decimalPlaces)
 {
     float currentHeight = height;
     float maxHeight = height;
     float distance = 0;
     float time = 0;
-    float precision = 100;
+    float precision = pow(10, decimalPlaces);
 
     float yVelocity = initVelocity*sin(rAngle);
     float xVelocity = initVelocity*cos(rAngle);
@@ -145,6 +154,7 @@ int main()
     float initVelocity;
     float height;
     float rAngle;
+    int decimalPlaces;
 
     bool programIsRunning = true;
     int phase = 0;                          // 0 = Choose settings for simulation, 1 = testing and calculating projectile motions
@@ -153,11 +163,11 @@ int main()
     {
         if (phase == 0)
         {
-            setSettings(&gravityAcceleration, &initVelocity, &height, &rAngle);
+            setSettings(&gravityAcceleration, &initVelocity, &height, &rAngle, &decimalPlaces);
             phase = 1;
         } else 
         {
-            simulate(gravityAcceleration, initVelocity, height, rAngle);
+            simulate(gravityAcceleration, initVelocity, height, rAngle, decimalPlaces);
             char userInput[10];
             std::cout << "\nWould you like to exit the program? (Type \"exit\" if you do)\n";
             std::cin >> userInput;
