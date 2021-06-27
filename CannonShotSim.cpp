@@ -44,71 +44,49 @@ void setSettings(float* gravityAcceleration, float* initVelocity, float* height,
 
         bool gettingValue = true;
 
-        while (gettingValue)
+        
+        std::cout << "Enter the desired non-zero positive gravitational acceleration in meters per second squared. An invalid input will result in value of 1 m/s2\n";
+        std::cin >> *gravityAcceleration;
+
+        clearInputBuffer();
+
+        if (*gravityAcceleration <= 0)
         {
-            std::cout << "Enter the desired positive gravitational acceleration in meters per second squared.\n";
-            std::cin >> *gravityAcceleration;
-
-            clearInputBuffer();
-
-            if (*gravityAcceleration <= 0 || *gravityAcceleration == NULL)
-            {
-                std::cout << "Invalid input: gravitational acceleration must be a positive number.\n";
-            } else {
-                gettingValue = false;
-            }
+            *gravityAcceleration = 1;
         }
+        
+        std::cout << "Enter the non-negative height of the cannon in meters. An invalid input will result in a value of 0 m. \n";
+        std::cin >> *height;
 
-        gettingValue = true;
+        clearInputBuffer();
 
-        while (gettingValue)
+        if (*height < 0)
         {
-            std::cout << "Enter the non-negative height of the cannon in meters.\n";
-            std::cin >> *height;
-
-            clearInputBuffer();
-
-            if (*height < 0 || *height == NULL)
-            {
-                std::cout << "Invalid input: the height must be a non-negative number.\n";
-            } else {
-                gettingValue = false;
-            }
+            *height = 0;
         }
-
-        gettingValue = true;
 
         float dAngle;
-        while (gettingValue)
-        {
-            std::cout << "Enter the angle relative to ground in degrees (e.g. 90 degrees points straight up)\n";
-            std::cin >> dAngle;
+        
+        std::cout << "Enter the angle relative to ground in degrees (e.g. 90 degrees points straight up). An invalid input will result in a value of 0 degrees.\n";
+        std::cin >> dAngle;
 
-            clearInputBuffer();
-            if (dAngle == NULL) {
-                std::cout << "Invalid input: the angle must be a real number.\n";
-            } else 
-            {
-                *rAngle = dAngle*3.1416/180;
-                gettingValue = false;
-            }
+        clearInputBuffer();
+        if (dAngle == NULL) {
+            dAngle = 0;
         }
+
+        *rAngle = dAngle*3.1416/180;
 
         gettingValue = true;
 
-        while (gettingValue) 
+        std::cout << "Enter the initial velocity in meters per second. An invalid input will result in a value of 0.\n";
+        std::cin >> *initVelocity;
+
+        clearInputBuffer();
+
+        if (*initVelocity == NULL) 
         {
-            std::cout << "Enter the initial velocity in meters per second\n";
-            std::cin >> *initVelocity;
-
-            clearInputBuffer();
-
-            if (*initVelocity == NULL) 
-            {
-                std::cout << "Invalid input: inital velocity must be a real number.\n";
-            } else {
-                gettingValue = false;
-            }
+            *initVelocity = 0;
         }
 
         std::cout << "\nThese are the values you have inputted:\n";
